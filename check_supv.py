@@ -34,14 +34,24 @@ supervisor_states = {
     'UNKNOWN': CRITICAL
     }
 
-def get_status(proc_name):
+def get_status():
     try:
-        status_output = os.popen('%s %s' % (SUPERV_STAT_CHECK, proc_name)).read()
-        proc_status = status_output.split()[1]
-        return (status_output, supervisor_states[proc_status])
+        worst = OK
+        worst_lines = []
+        status_output = os.popen('%s' % (SUPERV_STAT_CHECK,)).readlines()
+        for line in status_output:
+            proc_status = line.split()[1]
+            cur_status = supervisor_states[proc_status]
+            if cur_status > worst:
+                worst = cur_status
+                worst_lines = []
+                worst_lines.append(line)
+            elif cur_status == worst:
+                worst_lines.append(line)
+        return (worst_lines, worst)
     except:
-        print "CRITICAL: Could not get status of %s" % proc_name
-        raise SystemExit, CRITICAL
+        print "CRITICAL: Could not run %s" % (SUPERV_STAT_CHECK,)
+        raise SystemExit, UNKNOWN
 
 parser = OptionParser()
 parser.add_option('-p', '--processes-name', dest='proc_name',
@@ -52,6 +62,9 @@ parser.add_option('-q', '--quiet', dest='verbose', action='store_false')
 
 options, args = parser.parse_args()
 
-output = get_status(options.proc_name)
-print output[0]
+output = get_status()
+if output[1] != 0:
+    print "Failures detected for "+(' '.join([x.split()[0] for x in output[0]]))
+else:
+    print "All Services OK"
 raise SystemExit, output[1]
