@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 """
-nagios plugin to monitor indivdual supervisor processes
--------------------------------------------------------
+nagios plugin to monitor indivdual/all supervisor processes
+-----------------------------------------------------------
 
-usage
+usage, to check a single process
 
 ::
 
     check_supv -p PROCESS_NAME
+
+usage, to check all declared processes
+
+::
+
+    check_supv -a
 
 
 """

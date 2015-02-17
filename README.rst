@@ -4,7 +4,7 @@ Supervisord-Nagios-Plugin
 Instalation
 -----------
 
-Copy the file check_supv.py to your Nagios/Icinga directory and make executable 
+Copy the file check_supv.py to your Nagios/Icinga directory and make executable
 
 
 Configuration
@@ -24,4 +24,14 @@ Run the command with the name of the supervisord process as it appears in ``supe
 ::
 
         check_supv -p PROCESS_NAME
+        check_supv --processes-name PROCESS_NAME
 
+To check all processes declared and listed in ``supervisorctl status``
+
+::
+
+        check_supv -a
+        check_supv --all
+
+
+Note: -p/--processes-name and -a/--all are mutually exclusive
