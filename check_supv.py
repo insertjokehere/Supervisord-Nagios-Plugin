@@ -82,10 +82,6 @@ group.add_argument('-p', '--processes-name', dest='process_name',
 group.add_argument('-a', '--all', action="store_true",
     help="List all processes and check them")
 
-parser.add_argument('-v', '--verbose', dest='verbose', action='store_true',
-    default=False)
-parser.add_argument('-q', '--quiet', dest='verbose', action='store_false')
-
 args = parser.parse_args()
 
 if args.all:
