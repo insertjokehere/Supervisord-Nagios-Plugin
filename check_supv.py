@@ -11,7 +11,7 @@ usage
 
 
 """
-from optparse import OptionParser
+import argparse
 import os
 
 #nagios return codes
@@ -32,7 +32,7 @@ supervisor_states = {
     'BACKOFF': CRITICAL,
     'FATAL': CRITICAL,
     'UNKNOWN': CRITICAL
-    }
+}
 
 def get_status(proc_name):
     try:
@@ -43,15 +43,15 @@ def get_status(proc_name):
         print "CRITICAL: Could not get status of %s" % proc_name
         raise SystemExit, CRITICAL
 
-parser = OptionParser()
-parser.add_option('-p', '--processes-name', dest='proc_name',
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', '--processes-name', dest='process_name',
     help="Name of process as it appears in supervisorctl status")
-parser.add_option('-v', '--verbose', dest='verbose', action='store_true',
+parser.add_argument('-v', '--verbose', dest='verbose', action='store_true',
     default=False)
-parser.add_option('-q', '--quiet', dest='verbose', action='store_false')
+parser.add_argument('-q', '--quiet', dest='verbose', action='store_false')
 
-options, args = parser.parse_args()
+args = parser.parse_args()
 
-output = get_status(options.proc_name)
+output = get_status(args.process_name)
 print output[0]
 raise SystemExit, output[1]
