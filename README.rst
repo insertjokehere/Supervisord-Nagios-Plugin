@@ -35,3 +35,8 @@ To check all processes declared and listed in ``supervisorctl status``
 
 
 Note: -p/--processes-name and -a/--all are mutually exclusive
+
+By default, jobs in the 'STOPPED' state are counted as being OK. If these should cause the check to return WARNING, pass --warn-stopped. Eg::
+
+   check_supv -p PROCESS_NAME --warn-stopped
+
